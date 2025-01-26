@@ -179,104 +179,69 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
         int selectedRow = tblAccounts.getSelectedRow();
 
         if (selectedRow >= 0) {
-            // 弹出确认对话框
-            int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog(
                 null, 
                 "Are you sure you want to delete the selected account?", 
                 "Warning", 
-                dialogButton
+                JOptionPane.YES_NO_OPTION
             );
 
             if (dialogResult == JOptionPane.YES_OPTION) {
-                // 获取选中行的银行名称和路由号码
                 String bankName = (String) tblAccounts.getValueAt(selectedRow, 0);
                 String routingNumber = (String) tblAccounts.getValueAt(selectedRow, 1);
 
-                // 查找对应的账户对象
-                Account selectedAccount = null;
-                for (Account acc : accountDirectory.getAccounts()) {
-                    if (acc.getBankName().equals(bankName) && 
-                        acc.getRoutingNumber().equals(routingNumber)) {
-                        selectedAccount = acc;
-                        break;
-                    }
-                }
-
+                Account selectedAccount = findAccount(bankName, routingNumber);
+                
                 if (selectedAccount != null) {
-                    // 从 accountDirectory 中删除账户
                     accountDirectory.deleteAccount(selectedAccount);
-                    // 刷新表格数据
-                    populateTable();
+                    populateTable(); // Refresh table after deletion
                     JOptionPane.showMessageDialog(null, "Account deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(
-                null, 
-                "Please select an account from the list.", 
-                "Warning", 
-                JOptionPane.WARNING_MESSAGE
-            );
+            JOptionPane.showMessageDialog(null, "Please select an account from the list.", "Warning", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // 获取搜索框中的文本
         String searchText = txtSearchBox.getText().trim().toLowerCase();
 
         if (searchText.isEmpty()) {
-            // 如果搜索框为空，显示所有数据
-            populateTable();
+            populateTable(); // Show all data if search box is empty
             return;
         }
 
-        // 获取表格模型
         DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();
-        // 清空现有数据
-        model.setRowCount(0);
+        model.setRowCount(0); // Clear existing data
 
-        // 遍历所有账户，查找匹配项
         for (Account a : accountDirectory.getAccounts()) {
-            // 检查银行名称、路由号码或账户号码是否包含搜索文本
             if (a.getBankName().toLowerCase().contains(searchText) ||
                 a.getRoutingNumber().toLowerCase().contains(searchText) ||
                 a.getAccountNumber().toLowerCase().contains(searchText)) {
 
-                Object[] row = new Object[4];
-                row[0] = a.getBankName();
-                row[1] = a.getRoutingNumber();
-                row[2] = a.getAccountNumber();
-                row[3] = String.valueOf(a.getBalance());
+                Object[] row = {a.getBankName(), a.getRoutingNumber(), a.getAccountNumber(), a.getBalance()};
                 model.addRow(row);
             }
         }
 
         if (model.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null, "No matching accounts found.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
-            // 可选：如果没有找到匹配项，恢复显示所有数据
-            populateTable();
+            populateTable(); // Restore original data if no match is found
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void populateTable() {
-        // 获取表格的默认模型
-        DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();
+        refreshTable(); // 直接调用 refreshTable 方法
+    }
 
-        // 清空表格中的所有行
-        model.setRowCount(0);
-
-        // 遍历 accountDirectory 中的账户数据
-            for (Account a : accountDirectory.getAccounts()) {
-            Object[] row = new Object[4];
-            row[0] = a.getBankName();      // 银行名称放在第一列
-            row[1] = a.getRoutingNumber(); // 路由号码
-            row[2] = a.getAccountNumber(); // 账户号码
-            row[3] = String.valueOf(a.getBalance());
-
-            // 将这一行数据添加到表格模型中
-            model.addRow(row);
+    
+    private Account findAccount(String bankName, String routingNumber) {
+        for (Account acc : accountDirectory.getAccounts()) {
+            if (acc.getBankName().equals(bankName) && acc.getRoutingNumber().equals(routingNumber)) {
+                return acc;
+            }
         }
+        return null;
     }
     
 
@@ -290,4 +255,19 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
     private javax.swing.JTable tblAccounts;
     private javax.swing.JTextField txtSearchBox;
     // End of variables declaration//GEN-END:variables
+
+    void refreshTable() {
+        DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();
+        model.setRowCount(0); // 清空表格数据
+
+        // 重新加载所有账户数据
+        for (Account a : accountDirectory.getAccounts()) {
+            Object[] row = new Object[4];
+            row[0] = a.getBankName();
+            row[1] = a.getRoutingNumber();
+            row[2] = a.getAccountNumber();
+            row[3] = String.valueOf(a.getBalance());
+            model.addRow(row);
+        }
+    }
 }

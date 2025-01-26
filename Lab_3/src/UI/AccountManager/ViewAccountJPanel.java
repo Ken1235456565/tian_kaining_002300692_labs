@@ -5,8 +5,10 @@
 package UI.AccountManager;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 import model.Account;
 import model.AccountDirectory;
 
@@ -16,6 +18,8 @@ import model.AccountDirectory;
  */
 public class ViewAccountJPanel extends javax.swing.JPanel {
     private JPanel userProcessContainer;
+    private javax.swing.JTable tblAccounts;
+private javax.swing.JScrollPane jScrollPane1;
     private AccountDirectory accountDirectory;
     private Account account;
 
@@ -169,23 +173,54 @@ public class ViewAccountJPanel extends javax.swing.JPanel {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         String routingNumber = txtRoutingNumber.getText();
-        String accountNumber = txtAccountNumber.getText();
-        String bankName = txtBankName.getText();
+    String accountNumber = txtAccountNumber.getText();
+    String bankName = txtBankName.getText();
 
-        if (routingNumber.isBlank() || accountNumber.isBlank() || bankName.isBlank()) {
-            JOptionPane.showMessageDialog(null, "All fields are mandatory.");
-            return;
+    if (routingNumber.isBlank() || accountNumber.isBlank() || bankName.isBlank()) {
+        JOptionPane.showMessageDialog(null, "All fields must be filled in.");
+        return;
+    }
+
+    account.setRoutingNumber(routingNumber);
+    account.setAccountNumber(accountNumber);
+    account.setBankName(bankName);
+
+    // 更新主列表
+    Component[] components = userProcessContainer.getComponents();
+    for (Component component : components) {
+        if (component instanceof ManageAccountsJPanel) {
+            ManageAccountsJPanel panel = (ManageAccountsJPanel) component;
+            if (panel != null) {
+                panel.refreshTable();
+            }
+            break;
         }
+    }
 
-        account.setRoutingNumber(routingNumber);
-        account.setAccountNumber(accountNumber);
-        account.setBankName(bankName);
-
-        JOptionPane.showMessageDialog(null, "Account successfully updated.", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        setViewMode();
+    JOptionPane.showMessageDialog(null, "Account updated successfully.");
+    setViewMode();
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    // 添加 public 方法用于刷新表格
+    public void refreshTable() {
+        DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();
+        model.setRowCount(0);  // 清空表格
+
+        // 重新加载所有账户数据
+        for (Account a : accountDirectory.getAccounts()) {
+            Object[] row = new Object[4];
+            row[0] = a.getBankName();
+            row[1] = a.getRoutingNumber();
+            row[2] = a.getAccountNumber();
+            row[3] = String.valueOf(a.getBalance());
+            model.addRow(row);
+        }
+    }
+
+    // 修改之前的 private populateTable 方法为调用 refreshTable
+    private void populateTable() {
+        refreshTable();
+    }
     public void displayAccountDetails(Account account) {
     txtRoutingNumber.setText(account.getRoutingNumber());
     txtAccountNumber.setText(account.getAccountNumber());
@@ -193,9 +228,9 @@ public class ViewAccountJPanel extends javax.swing.JPanel {
     }
     
     private void refreshTextFields() {
-    txtRoutingNumber.setText(account.getRoutingNumber());
-    txtAccountNumber.setText(account.getAccountNumber());
-    txtBankName.setText(account.getBankName());
+        txtRoutingNumber.setText(account.getRoutingNumber());
+        txtAccountNumber.setText(account.getAccountNumber());
+        txtBankName.setText(account.getBankName());
     }
     
     private void setViewMode() {
