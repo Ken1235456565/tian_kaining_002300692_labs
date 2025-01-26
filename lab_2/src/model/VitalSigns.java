@@ -11,7 +11,7 @@ package model;
 public class VitalSigns {
     // Variable declarations
     String date;          
-    String bloodPressure; 
+    double bloodPressure; 
     double temperature;   // with decimal
     int pulse;            // without
     
@@ -22,13 +22,9 @@ public class VitalSigns {
     public void setDate(String date) {
         this.date = date;
     }
-
-    public String getBloodPressure() {
+    
+    public double getBloodPressure() {
         return bloodPressure;
-    }
-
-    public void setBloodPressure(String bloodPressure) {
-        this.bloodPressure = bloodPressure;
     }
 
     public double getTemperature() {
@@ -45,5 +41,9 @@ public class VitalSigns {
 
     public void setPulse(int pulse) {
         this.pulse = pulse;
+    }
+
+    public void setBloodPressure(double bloodPressure) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
