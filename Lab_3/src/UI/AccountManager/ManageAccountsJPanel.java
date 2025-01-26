@@ -205,28 +205,52 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String searchText = txtSearchBox.getText().trim().toLowerCase();
+        int matchCount = 0; // 添加计数器
 
+        DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();
+        model.setRowCount(0); // 清空现有数据
+
+        // 如果搜索框为空，显示所有数据
         if (searchText.isEmpty()) {
-            populateTable(); // Show all data if search box is empty
+            populateTable();
+            int totalCount = accountDirectory.getAccounts().size();
+            JOptionPane.showMessageDialog(null, 
+                String.format("显示所有记录：共 %d 条", totalCount),
+                "搜索结果", 
+                JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();
-        model.setRowCount(0); // Clear existing data
-
+        // 遍历所有账户，执行搜索
         for (Account a : accountDirectory.getAccounts()) {
             if (a.getBankName().toLowerCase().contains(searchText) ||
                 a.getRoutingNumber().toLowerCase().contains(searchText) ||
-                a.getAccountNumber().toLowerCase().contains(searchText)) {
+                a.getAccountNumber().toLowerCase().contains(searchText) ||
+                String.valueOf(a.getBalance()).contains(searchText)) {
 
-                Object[] row = {a.getBankName(), a.getRoutingNumber(), a.getAccountNumber(), a.getBalance()};
+                Object[] row = new Object[4];
+                row[0] = a.getBankName();
+                row[1] = a.getRoutingNumber();
+                row[2] = a.getAccountNumber();
+                row[3] = String.valueOf(a.getBalance());
                 model.addRow(row);
+                matchCount++; // 增加计数
             }
         }
 
-        if (model.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "No matching accounts found.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
-            populateTable(); // Restore original data if no match is found
+        // 显示搜索结果
+        if (matchCount > 0) {
+            JOptionPane.showMessageDialog(null, 
+                String.format("找到 %d 条匹配记录", matchCount),
+                "搜索结果", 
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                "未找到匹配记录",
+                "搜索结果", 
+                JOptionPane.INFORMATION_MESSAGE);
+            // 如果没有找到匹配项，显示所有数据
+            populateTable();
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
