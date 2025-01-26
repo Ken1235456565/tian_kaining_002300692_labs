@@ -9,12 +9,41 @@ package model;
  * @author tiankaining
  */
 public class VitalSigns {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+    // Variable declarations
+    String date;          
+    String bloodPressure; 
+    double temperature;   // with decimal
+    int pulse;            // without
     
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getBloodPressure() {
+        return bloodPressure;
+    }
+
+    public void setBloodPressure(String bloodPressure) {
+        this.bloodPressure = bloodPressure;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public int getPulse() {
+        return pulse;
+    }
+
+    public void setPulse(int pulse) {
+        this.pulse = pulse;
+    }
 }
