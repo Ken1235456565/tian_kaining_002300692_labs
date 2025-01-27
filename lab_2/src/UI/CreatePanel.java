@@ -81,7 +81,7 @@ public class CreatePanel extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(btnSave)
                         .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(214, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,9 +91,9 @@ public class CreatePanel extends javax.swing.JPanel {
                         .addGap(82, 82, 82)
                         .addComponent(lblTemp))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
+                        .addGap(19, 19, 19)
                         .addComponent(lblTitle)
-                        .addGap(18, 18, 18)
+                        .addGap(42, 42, 42)
                         .addComponent(txtTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -109,7 +109,7 @@ public class CreatePanel extends javax.swing.JPanel {
                             .addComponent(lblDate))
                         .addGap(18, 18, 18)
                         .addComponent(btnSave)))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
