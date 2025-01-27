@@ -151,7 +151,6 @@ public class ViewPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         // 获取表格中选中的行索引
         int selectedIndex = tblVitals.getSelectedRow();
-    
         // 如果未选中任何行，弹出警告对话框
         if (selectedIndex < 0) {
         JOptionPane.showMessageDialog(this, 
@@ -160,7 +159,6 @@ public class ViewPanel extends javax.swing.JPanel {
             JOptionPane.WARNING_MESSAGE);
         return;
         }
-    
         // 获取表格模型和选中的 VitalSigns 对象
         DefaultTableModel model = (DefaultTableModel) tblVitals.getModel();
         // 从 vitalSignsHistory 中获取选中的 VitalSigns 对象
@@ -177,6 +175,28 @@ public class ViewPanel extends javax.swing.JPanel {
 
     private void btnDeletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletActionPerformed
         // TODO add your handling code here:
+        // 获取表格中选中的行索引
+        int selectedIndex = tblVitals.getSelectedRow();
+        // 如果未选中任何行，弹出警告对话框
+        if (selectedIndex < 0) {
+        JOptionPane.showMessageDialog(this, 
+            "Please select a row first", 
+            "Warning", 
+            JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+        // 获取表格模型和选中的 VitalSigns 对象
+        DefaultTableModel model = (DefaultTableModel) tblVitals.getModel();
+        // 从 vitalSignsHistory 中获取选中的 VitalSigns 对象
+        VitalSigns selectedVitals = vitalSignsHistory.getHistory().get(selectedIndex);
+        
+        //Implement the deletion
+        if (selectedVitals != null) {
+        vitalSignsHistory.removeVitals(selectedVitals);
+        JOptionPane.showMessageDialog(this, "Vital signs deleted!", "Success", JOptionPane.WARNING_MESSAGE);
+        }
+        //update table
+        populateTable();
     }//GEN-LAST:event_btnDeletActionPerformed
 
 
