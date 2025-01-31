@@ -5,19 +5,27 @@
 package UI.AccountManager;
 
 import java.awt.CardLayout;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import model.Account;
+import model.AccountDirectory;
 
 /**
  *
  * @author tiankaining
  */
 public class ManageAccountsJPanel extends javax.swing.JPanel {
+    JPanel userProcessContainer;
+    AccountDirectory accountDirectory;
 
     /**
      * Creates new form ManageAccountsJPanel
      */
-    public ManageAccountsJPanel() {
+    public ManageAccountsJPanel(JPanel container, AccountDirectory directory) {
         initComponents();
         
+        userProcessContainer = container;
+        accountDirectory = directory;
     }
 
     /**
@@ -112,9 +120,33 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        
+        // 1. 从 userProcessContainer 中移除当前面板
+        userProcessContainer.remove(this);
+        // 2. 获取 userProcessContainer 的布局管理器（必须是 CardLayout）
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        // 3. 切换到前一个面板
+        layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
 
+    private void populateTable() {
+        // 获取表格的默认模型
+        DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();
+
+        // 清空表格中的所有行
+        model.setRowCount(0);
+
+        // 遍历 accountDirectory 中的账户数据
+            for (Account account : accountDirectory.getAccounts()) {
+            Object[] row = new Object[4]; // 创建一个包含4个元素的数组，表示一行数据
+            row[0] = account.getAccountNumber(); // 账户号码
+            row[1] = account.getRoutingNumber(); // 路由号码
+            row[2] = account.getBankName();      // 银行名称
+            row[3] = account.getBalance();       // 余额
+
+            // 将这一行数据添加到表格模型中
+            model.addRow(row);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;

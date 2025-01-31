@@ -5,7 +5,9 @@
 package UI.AccountManager;
 
 import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import model.Account;
 import model.AccountDirectory;
 
 /**
@@ -71,6 +73,11 @@ public class CreateAccountJPanel extends javax.swing.JPanel {
         });
 
         btnCreate.setText("Create Account");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -148,6 +155,46 @@ public class CreateAccountJPanel extends javax.swing.JPanel {
         // 3. 切换到前一个面板
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // TODO add your handling code here:
+        // 获取输入框的值
+        String routingNumber = txtRoutingNumber.getText();
+        String accountNumber = txtAccountNumber.getText();
+        String bankName = txtBankName.getText();
+        String balanceText = txtBalance.getText();
+
+        // 验证输入是否为空
+        if (routingNumber.isBlank() || bankName.isBlank() || accountNumber.isBlank()) {
+            JOptionPane.showMessageDialog(this, "All fields are mandatory.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // 如果输入为空，显示错误消息并退出方法
+        }
+
+        // 验证余额是否为有效数字
+        int balance;
+        try {
+            balance = Integer.parseInt(balanceText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please check the balance input.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return; // 如果余额不是有效数字，显示警告消息并退出方法
+        }
+
+        // 创建新账户并设置属性
+        Account newAccount = accountDirectory.addAccount();
+        newAccount.setRoutingNumber(routingNumber);
+        newAccount.setAccountNumber(accountNumber);
+        newAccount.setBankName(bankName);
+        newAccount.setBalance(balance);
+
+        // 显示成功消息
+        JOptionPane.showMessageDialog(this, "Account successfully created.", "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        // 清空输入框
+        txtRoutingNumber.setText("");
+        txtAccountNumber.setText("");
+        txtBankName.setText("");
+        txtBalance.setText("");
+    }//GEN-LAST:event_btnCreateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
