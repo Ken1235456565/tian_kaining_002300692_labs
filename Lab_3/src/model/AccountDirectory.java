@@ -38,5 +38,15 @@ public class AccountDirectory {
     public void deleteAccount(Account account) {
         accounts.remove(account);
     }
+    
+    //查找账户
+    public Account searchAccount(String accountNumber) {
+        for (Account a : accounts) {
+            if (a.getAccountNumber().contains(accountNumber)) {
+                return a;
+            }
+        }
+        return null;
+    }
 }
 

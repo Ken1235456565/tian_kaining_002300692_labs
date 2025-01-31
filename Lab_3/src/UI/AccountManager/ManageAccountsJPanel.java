@@ -5,6 +5,7 @@
 package UI.AccountManager;
 
 import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import model.Account;
@@ -26,6 +27,8 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
         
         userProcessContainer = container;
         accountDirectory = directory;
+        
+        populateTable();
     }
 
     /**
@@ -69,10 +72,25 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblAccounts);
 
         btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         btnViewDetails.setText("View Details");
+        btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewDetailsActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Delete Account");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -128,6 +146,110 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
 
+    private void btnViewDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewDetailsActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblAccounts.getSelectedRow();
+        if (selectedRow >= 0) {
+            String bankName = (String) tblAccounts.getValueAt(selectedRow, 0);
+            String routingNumber = (String) tblAccounts.getValueAt(selectedRow, 1);
+
+            // 通过银行名称和路由号码查找对应的账户
+            Account selectedAccount = null;
+            for (Account acc : accountDirectory.getAccounts()) {
+                if (acc.getBankName().equals(bankName) && 
+                    acc.getRoutingNumber().equals(routingNumber)) {
+                    selectedAccount = acc;
+                    break;
+                }
+            }
+
+            if (selectedAccount != null) {
+                ViewAccountJPanel viewPanel = new ViewAccountJPanel(userProcessContainer, accountDirectory, selectedAccount);
+                userProcessContainer.add("ViewAccountJPanel", viewPanel);
+                CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+                layout.next(userProcessContainer);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select an account from the list to view.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnViewDetailsActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        // 获取用户选中的行
+            int selectedRow = tblAccounts.getSelectedRow();
+
+            // 检查是否有选中的行
+            if (selectedRow >= 0) {
+            // 弹出确认对话框
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(
+            null, 
+            "Are you sure you want to delete the selected account?", 
+            "Warning", 
+            dialogButton
+            );
+
+            // 如果用户点击“是”
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                // 获取选中行的账户对象
+                Account selectedAccount = (Account) tblAccounts.getValueAt(selectedRow, 0); // 假设账户对象在第一列
+
+                // 从 accountDirectory 中删除账户
+                accountDirectory.deleteAccount(selectedAccount);
+
+                // 刷新表格数据
+                populateTable();
+            }
+        } else {
+        // 如果没有选中的行，显示警告消息
+        JOptionPane.showMessageDialog(
+            null, 
+            "Please select an account from the list.", 
+            "Warning", 
+            JOptionPane.WARNING_MESSAGE
+        );
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // 获取搜索框中的文本
+        String searchText = txtSearchBox.getText().trim().toLowerCase();
+
+        if (searchText.isEmpty()) {
+            // 如果搜索框为空，显示所有数据
+            populateTable();
+            return;
+        }
+
+        // 获取表格模型
+        DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();
+        // 清空现有数据
+        model.setRowCount(0);
+
+        // 遍历所有账户，查找匹配项
+        for (Account a : accountDirectory.getAccounts()) {
+            // 检查银行名称、路由号码或账户号码是否包含搜索文本
+            if (a.getBankName().toLowerCase().contains(searchText) ||
+                a.getRoutingNumber().toLowerCase().contains(searchText) ||
+                a.getAccountNumber().toLowerCase().contains(searchText)) {
+
+                Object[] row = new Object[4];
+                row[0] = a.getBankName();
+                row[1] = a.getRoutingNumber();
+                row[2] = a.getAccountNumber();
+                row[3] = String.valueOf(a.getBalance());
+                model.addRow(row);
+            }
+        }
+
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "No matching accounts found.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
+            // 可选：如果没有找到匹配项，恢复显示所有数据
+            populateTable();
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
     private void populateTable() {
         // 获取表格的默认模型
         DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();
@@ -136,17 +258,18 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
         model.setRowCount(0);
 
         // 遍历 accountDirectory 中的账户数据
-            for (Account account : accountDirectory.getAccounts()) {
-            Object[] row = new Object[4]; // 创建一个包含4个元素的数组，表示一行数据
-            row[0] = account.getAccountNumber(); // 账户号码
-            row[1] = account.getRoutingNumber(); // 路由号码
-            row[2] = account.getBankName();      // 银行名称
-            row[3] = account.getBalance();       // 余额
+            for (Account a : accountDirectory.getAccounts()) {
+            Object[] row = new Object[4];
+            row[0] = a.getBankName();      // 银行名称放在第一列
+            row[1] = a.getRoutingNumber(); // 路由号码
+            row[2] = a.getAccountNumber(); // 账户号码
+            row[3] = String.valueOf(a.getBalance());
 
             // 将这一行数据添加到表格模型中
             model.addRow(row);
         }
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;

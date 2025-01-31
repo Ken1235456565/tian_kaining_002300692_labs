@@ -91,7 +91,7 @@ public class AccountMngWorkAreaJPanel extends javax.swing.JPanel {
     private void btnManageAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageAccountActionPerformed
         // TODO add your handling code here:
         // 1. 创建一个新的 AccountMngWorkAreaJPanel 实例
-        ViewAccountJPanel panel = new ViewAccountJPanel(userProcessContainer, accountDirectory);
+        ManageAccountsJPanel panel = new ManageAccountsJPanel(userProcessContainer, accountDirectory);
         // 2. 将面板添加到 userProcessContainer 中，并命名为 "AccountMngWorkAreaJPanel"
         userProcessContainer.add("AccountMngWorkAreaJPanel", panel);
         // 3. 获取 userProcessContainer 的布局管理器（必须是 CardLayout）
