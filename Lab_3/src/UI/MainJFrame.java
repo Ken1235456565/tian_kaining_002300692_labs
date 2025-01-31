@@ -4,6 +4,8 @@
  */
 package UI;
 
+import UI.AccountManager.AccountMngWorkAreaJPanel;
+import java.awt.CardLayout;
 import model.Account;
 import model.AccountDirectory;
 
@@ -42,6 +44,11 @@ public class MainJFrame extends javax.swing.JFrame {
         splitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         btnAccountMng.setText("Open Account Manager Work Area");
+        btnAccountMng.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccountMngActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout topJPanelLayout = new javax.swing.GroupLayout(topJPanel);
         topJPanel.setLayout(topJPanelLayout);
@@ -62,17 +69,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         splitPane.setTopComponent(topJPanel);
 
-        javax.swing.GroupLayout userProcessContainerLayout = new javax.swing.GroupLayout(userProcessContainer);
-        userProcessContainer.setLayout(userProcessContainerLayout);
-        userProcessContainerLayout.setHorizontalGroup(
-            userProcessContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 830, Short.MAX_VALUE)
-        );
-        userProcessContainerLayout.setVerticalGroup(
-            userProcessContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 535, Short.MAX_VALUE)
-        );
-
+        userProcessContainer.setLayout(new java.awt.CardLayout());
         splitPane.setRightComponent(userProcessContainer);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -90,6 +87,18 @@ public class MainJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAccountMngActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccountMngActionPerformed
+        // TODO add your handling code here:
+        // 1. 创建一个新的 AccountMngWorkAreaJPanel 实例
+        AccountMngWorkAreaJPanel panel = new AccountMngWorkAreaJPanel(userProcessContainer, accountDirectory);
+        // 2. 将面板添加到 userProcessContainer 中，并命名为 "AccountMngWorkAreaJPanel"
+        userProcessContainer.add("AccountMngWorkAreaJPanel", panel);
+        // 3. 获取 userProcessContainer 的布局管理器（必须是 CardLayout）
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        // 4. 切换到下一张卡片
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnAccountMngActionPerformed
 
     /**
      * @param args the command line arguments

@@ -15,6 +15,7 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
      */
     public ManageAccountsJPanel() {
         initComponents();
+        
     }
 
     /**

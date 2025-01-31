@@ -4,17 +4,26 @@
  */
 package UI.AccountManager;
 
+import java.awt.CardLayout;
+import javax.swing.JPanel;
+import model.AccountDirectory;
+
 /**
  *
  * @author tiankaining
  */
 public class AccountMngWorkAreaJPanel extends javax.swing.JPanel {
-
+    // 成员变量
+    JPanel userProcessContainer; // 用于存储传入的容器对象
+    AccountDirectory accountDirectory; // 用于存储传入的账户数据管理对象
+    
     /**
      * Creates new form AccountMngWorkAreaJPanel
      */
-    public AccountMngWorkAreaJPanel() {
+    public AccountMngWorkAreaJPanel(JPanel container, AccountDirectory directory) {
         initComponents();
+        userProcessContainer = container;
+        accountDirectory = directory;
     }
 
     /**
@@ -39,6 +48,11 @@ public class AccountMngWorkAreaJPanel extends javax.swing.JPanel {
         });
 
         btnManageAccount.setText("Manage Account");
+        btnManageAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageAccountActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -64,7 +78,27 @@ public class AccountMngWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnCreateAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAccountActionPerformed
         // TODO add your handling code here:
+        // 1. 创建一个新的 CreateAccountJPanel 实例
+        CreateAccountJPanel panel = new CreateAccountJPanel(userProcessContainer, accountDirectory);
+        // 2. 将面板添加到 userProcessContainer 中
+        userProcessContainer.add("CreateAccountJPanel", panel);
+        // 3. 获取 CardLayout
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        // 4. 切换到新创建的面板
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnCreateAccountActionPerformed
+
+    private void btnManageAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageAccountActionPerformed
+        // TODO add your handling code here:
+        // 1. 创建一个新的 AccountMngWorkAreaJPanel 实例
+        ViewAccountJPanel panel = new ViewAccountJPanel(userProcessContainer, accountDirectory);
+        // 2. 将面板添加到 userProcessContainer 中，并命名为 "AccountMngWorkAreaJPanel"
+        userProcessContainer.add("AccountMngWorkAreaJPanel", panel);
+        // 3. 获取 userProcessContainer 的布局管理器（必须是 CardLayout）
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        // 4. 切换到下一张卡片
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnManageAccountActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
