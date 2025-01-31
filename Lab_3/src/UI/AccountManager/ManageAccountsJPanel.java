@@ -176,39 +176,48 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        // 获取用户选中的行
-            int selectedRow = tblAccounts.getSelectedRow();
+        int selectedRow = tblAccounts.getSelectedRow();
 
-            // 检查是否有选中的行
-            if (selectedRow >= 0) {
+        if (selectedRow >= 0) {
             // 弹出确认对话框
             int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog(
-            null, 
-            "Are you sure you want to delete the selected account?", 
-            "Warning", 
-            dialogButton
+                null, 
+                "Are you sure you want to delete the selected account?", 
+                "Warning", 
+                dialogButton
             );
 
-            // 如果用户点击“是”
             if (dialogResult == JOptionPane.YES_OPTION) {
-                // 获取选中行的账户对象
-                Account selectedAccount = (Account) tblAccounts.getValueAt(selectedRow, 0); // 假设账户对象在第一列
+                // 获取选中行的银行名称和路由号码
+                String bankName = (String) tblAccounts.getValueAt(selectedRow, 0);
+                String routingNumber = (String) tblAccounts.getValueAt(selectedRow, 1);
 
-                // 从 accountDirectory 中删除账户
-                accountDirectory.deleteAccount(selectedAccount);
+                // 查找对应的账户对象
+                Account selectedAccount = null;
+                for (Account acc : accountDirectory.getAccounts()) {
+                    if (acc.getBankName().equals(bankName) && 
+                        acc.getRoutingNumber().equals(routingNumber)) {
+                        selectedAccount = acc;
+                        break;
+                    }
+                }
 
-                // 刷新表格数据
-                populateTable();
+                if (selectedAccount != null) {
+                    // 从 accountDirectory 中删除账户
+                    accountDirectory.deleteAccount(selectedAccount);
+                    // 刷新表格数据
+                    populateTable();
+                    JOptionPane.showMessageDialog(null, "Account deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         } else {
-        // 如果没有选中的行，显示警告消息
-        JOptionPane.showMessageDialog(
-            null, 
-            "Please select an account from the list.", 
-            "Warning", 
-            JOptionPane.WARNING_MESSAGE
-        );
+            JOptionPane.showMessageDialog(
+                null, 
+                "Please select an account from the list.", 
+                "Warning", 
+                JOptionPane.WARNING_MESSAGE
+            );
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
