@@ -4,6 +4,8 @@
  */
 package UI.AccountManager;
 
+import java.awt.CardLayout;
+
 /**
  *
  * @author tiankaining
@@ -39,6 +41,11 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
         lblTitle.setText("Manage Account");
 
         btnBack.setText("<<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         tblAccounts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -102,6 +109,11 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
                 .addContainerGap(250, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnBackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

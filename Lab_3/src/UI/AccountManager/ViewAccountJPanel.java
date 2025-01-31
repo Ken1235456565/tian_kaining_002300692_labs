@@ -4,6 +4,7 @@
  */
 package UI.AccountManager;
 
+import java.awt.CardLayout;
 import javax.swing.JPanel;
 import model.AccountDirectory;
 
@@ -50,6 +51,11 @@ public class ViewAccountJPanel extends javax.swing.JPanel {
         lblTitle.setText("View Account");
 
         btnBack.setText("<<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         lbiRoutingNumber.setText("Routing Number: ");
 
@@ -149,6 +155,16 @@ public class ViewAccountJPanel extends javax.swing.JPanel {
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        // 1. 从 userProcessContainer 中移除当前面板
+        userProcessContainer.remove(this);
+        // 2. 获取 userProcessContainer 的布局管理器（必须是 CardLayout）
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        // 3. 切换到前一个面板
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_btnBackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
