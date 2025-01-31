@@ -209,7 +209,7 @@ public class ManageAccountsJPanel extends javax.swing.JPanel {
     // If the search box is empty, display all data
     if (searchText.isEmpty()) {
         JOptionPane.showMessageDialog(null, 
-            "Please Type in account number.",
+            "Please Type in account number to search.",
             "Warning", 
             JOptionPane.WARNING_MESSAGE);
         return;
