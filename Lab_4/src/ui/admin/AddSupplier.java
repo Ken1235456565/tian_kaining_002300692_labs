@@ -37,8 +37,6 @@ public class AddSupplier extends javax.swing.JPanel {
 
     private JPanel workArea;
     private SupplierDirectory supplierDirectory;
-    
-    private final JFileChooser fileChooser = new JFileChooser();
     ImageIcon logoImage;
     
     /** Creates new form AddSupplier */
@@ -46,7 +44,6 @@ public class AddSupplier extends javax.swing.JPanel {
         initComponents();
         this.workArea = workArea;
         this.supplierDirectory = supplierDirectory;
-        
     
     }
 
@@ -185,11 +182,25 @@ public class AddSupplier extends javax.swing.JPanel {
 
     private void btnAddSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddSupplierActionPerformed
         // TODO add your handling code here:
+        String name = txtName.getText().trim();
+        
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter a supplier name",
+                "Warning",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         Supplier supplier = supplierDirectory.addSupplier();
-        supplier.setSupplyName(txtName.getText());
+        supplier.setSupplyName(name);
         supplier.setLogoImage(logoImage);
         
-        JOptionPane.showMessageDialog(this, "Supplier successfully added", "Warning", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+            "Supplier successfully added",
+            "Success",
+            JOptionPane.INFORMATION_MESSAGE);
+            
         backAction();
     }//GEN-LAST:event_btnAddSupplierActionPerformed
 
@@ -200,15 +211,42 @@ public class AddSupplier extends javax.swing.JPanel {
 
     private void btnAttachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAttachActionPerformed
         // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+            "Image Files", "jpg", "jpeg", "png", "gif");
+        fileChooser.setFileFilter(filter);
         
+        int result = fileChooser.showOpenDialog(this);
         
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                File selectedFile = fileChooser.getSelectedFile();
+                logoImage = new ImageIcon(selectedFile.getPath());
+                
+                Image image = logoImage.getImage();
+                Image resizedImage = image.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+                logoImage = new ImageIcon(resizedImage);
+                
+                imgLogo.setIcon(logoImage);
+                imgLogo.setText("");
+                btnRemove.setEnabled(true);
+                
+            } catch (Exception ex) {
+                Logger.getLogger(AddSupplier.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, 
+                    "Error loading image", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnAttachActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
-        
-  
-        
+        logoImage = null;
+        imgLogo.setIcon(null);
+        imgLogo.setText("<No Image>");
+        btnRemove.setEnabled(false);
     }//GEN-LAST:event_btnRemoveActionPerformed
 
       

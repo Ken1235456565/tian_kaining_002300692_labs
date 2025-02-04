@@ -103,14 +103,27 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnManageSuppliersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageSuppliersActionPerformed
         // TODO add your handling code here:
-     
+        ManageSuppliers ms = new ManageSuppliers(workArea, supplierDirectory);
+        workArea.add("ManageSuppliers", ms);
+        CardLayout layout = (CardLayout)workArea.getLayout();
+        layout.next(workArea);
     }//GEN-LAST:event_btnManageSuppliersActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
+        mainWorkArea.remove(this);
+        CardLayout layout = (CardLayout)mainWorkArea.getLayout();
+        layout.previous(mainWorkArea);
         
- 
-                
+        // Refresh the login screen
+        Component[] components = mainWorkArea.getComponents();
+        for(Component c : components){
+            if(c instanceof LoginScreen){
+                LoginScreen loginScreen = (LoginScreen)c;
+                loginScreen.populateRoleCombo();
+                loginScreen.populateSupplierCombo();
+            }
+        }        
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     @Override

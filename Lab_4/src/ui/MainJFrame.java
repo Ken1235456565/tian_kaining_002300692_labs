@@ -26,10 +26,10 @@ public class MainJFrame extends javax.swing.JFrame {
         supplierDirectory = new SupplierDirectory();
         setSize(800,600);
         setResizable(false);
+     
        
-        
+        //initiate the login stream
         setLoginScreen();
-    
     }
 
     /**
@@ -51,11 +51,11 @@ public class MainJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainWorkArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(mainWorkArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainWorkArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(mainWorkArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -98,7 +98,10 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void setLoginScreen() {
 
-       
+    LoginScreen ls = new LoginScreen(mainWorkArea, supplierDirectory);
+    mainWorkArea.add("LoginScreen", ls);
+    CardLayout layout = (CardLayout) mainWorkArea.getLayout();
+    layout.next(mainWorkArea);
 
     }
 
@@ -106,5 +109,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel mainWorkArea;
     // End of variables declaration//GEN-END:variables
 
+    private void populateDemoData() {
+    Supplier bestBuy = supplierDirectory.addSupplier();
+    bestBuy.setSupplyName("Best Buy");
+    }
     
 }
