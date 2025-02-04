@@ -17,6 +17,7 @@ public class Product {
     private int price;
     private int id;
 
+    //this is a counter
     private static int count = 0;
     
     public Product() {
