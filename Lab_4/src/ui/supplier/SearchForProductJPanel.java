@@ -20,6 +20,7 @@ public class SearchForProductJPanel extends javax.swing.JPanel {
 
    JPanel workArea;
    Supplier supplier;
+   private javax.swing.JLabel lblMessage;
     
     /** Creates new form CreateProductJPanel */
     public SearchForProductJPanel(JPanel workArea, Supplier supplier) {
@@ -27,6 +28,8 @@ public class SearchForProductJPanel extends javax.swing.JPanel {
         initComponents();
         this.workArea = workArea;
         this.supplier = supplier;
+        lblMessage = new javax.swing.JLabel();
+        lblMessage.setForeground(new java.awt.Color(255, 0, 0));
     }
 
     /** This method is called from within the constructor to
@@ -103,8 +106,31 @@ public class SearchForProductJPanel extends javax.swing.JPanel {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
-        
-        
+        String productIdStr = idField.getText().trim();
+    
+        // 检查输入是否为空
+        if (productIdStr.isEmpty()) {
+            lblMessage.setText("Please enter a product ID");
+            return;
+        }
+
+        try {
+            int productId = Integer.parseInt(productIdStr);
+            Product product = supplier.getProductCatalog().searchProduct(productId);
+
+            if (product != null) {
+                lblMessage.setText(""); // 清除错误消息
+                ViewProductDetailJPanel vpjp = new ViewProductDetailJPanel(workArea, product);
+                workArea.add("ViewProductDetailJPanel", vpjp);
+                CardLayout layout = (CardLayout) workArea.getLayout();
+                layout.next(workArea);
+            } else {
+                lblMessage.setText("No product found with ID: " + productId);
+            }
+
+        } catch (NumberFormatException e) {
+            lblMessage.setText("Please enter a valid number");
+        }
 }//GEN-LAST:event_searchButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

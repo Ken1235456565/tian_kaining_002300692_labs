@@ -129,9 +129,6 @@ public class LoginScreen extends javax.swing.JPanel {
     private void cmbSuppliersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSuppliersActionPerformed
         // TODO add your handling code here:
         Supplier selectedSupplier = (Supplier) cmbSuppliers.getSelectedItem();
-        if (selectedSupplier != null) {
-            JOptionPane.showMessageDialog(this, "Selected Supplier: " + selectedSupplier.getSupplyName());
-        }
     }//GEN-LAST:event_cmbSuppliersActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed

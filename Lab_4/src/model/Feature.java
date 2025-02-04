@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author archil
@@ -13,6 +15,7 @@ public class Feature {
     private Product owner;
     private String name;
     private Object value;
+    
 
     public Feature(Product owner) {
         this.owner = owner;
@@ -47,6 +50,7 @@ public class Feature {
     public void setValue(Object value) {
         this.value = value;
     }
+    
 }
 
 

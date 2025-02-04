@@ -9,7 +9,9 @@ import model.Supplier;
 import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import ui.LoginScreen;
+
 
 /**
  *
@@ -19,7 +21,7 @@ public class SupplierWorkAreaJPanel extends javax.swing.JPanel {
 
     JPanel mainWorkArea;
     Supplier supplier;
-//    MasterOrderCatalog masterOrderCatalog;
+    //MasterOrderCatalog masterOrderCatalog;
 
     /**
      * Creates new form ProductManagerWorkAreaJPanel
@@ -28,9 +30,15 @@ public class SupplierWorkAreaJPanel extends javax.swing.JPanel {
 
         initComponents();
         this.mainWorkArea = mainWorkArea;
-        
         this.supplier = supplier;
-        if (supplier != null) lblWelcome.setText("Welcome to Lab 4, "+supplier.getSupplyName());
+        
+        if (supplier != null) {
+            lblWelcome.setText("Welcome to Lab 4, " + supplier.getSupplyName());
+            // Enable buttons only if supplier is valid
+            btnSupplierProfile.setEnabled(true);
+            btnManageStaff.setEnabled(true);
+            Performance.setEnabled(true);
+        }
         
 //      masterOrderCatalog = moc;
     }
@@ -162,15 +170,33 @@ public class SupplierWorkAreaJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnManageProductCatalogActionPerformed
 
     private void PerformanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerformanceActionPerformed
-        // TODO add your handling code here:
-//        ProductReportJPanel prjp = new workArea(userProcessContainer, supplier);
-//        workArea.add("ProductReportJPanelSupplier", prjp);
-//        CardLayout layout = (CardLayout)workArea.getLayout();
-//        layout.next(userProcessContainer);
+//        // TODO add your handling code here:
+//        JOptionPane.showMessageDialog(
+//            this, // Parent component (the current panel)
+//            "Performance feature is under development.", // Message to display
+//            "Info", // Dialog title
+//            JOptionPane.INFORMATION_MESSAGE // Message type
+//        );
     }//GEN-LAST:event_PerformanceActionPerformed
 
     private void btnSupplierProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierProfileActionPerformed
-        // TODO add your handling code here:
+//        // TODO add your handling code here:
+//        // Remove the current panel from the main work area
+//        mainWorkArea.remove(this);
+//
+//        // Get the last component in the main work area (assumed to be the login screen)
+//        Component[] componentArray = mainWorkArea.getComponents();
+//        Component component = componentArray[componentArray.length - 1];
+//
+//        // Cast the component to LoginScreen and refresh the supplier combo box
+//        if (component instanceof LoginScreen) {
+//            LoginScreen loginPanel = (LoginScreen) component;
+//            loginPanel.populateSupplierCombo(); // Refresh the supplier list in the login screen
+//        }
+//
+//        // Navigate back to the previous panel (login screen)
+//        CardLayout layout = (CardLayout) mainWorkArea.getLayout();
+//        layout.previous(mainWorkArea);
     }//GEN-LAST:event_btnSupplierProfileActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed

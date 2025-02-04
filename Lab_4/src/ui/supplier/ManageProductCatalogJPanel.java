@@ -7,6 +7,7 @@ package ui.supplier;
 
 import model.Product;
 import model.Supplier;
+import model.ProductCatalog;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -20,6 +21,8 @@ public class ManageProductCatalogJPanel extends javax.swing.JPanel {
 
     JPanel workArea;
     Supplier supplier;
+    private javax.swing.JTextField txtName;
+    private ProductCatalog productCatalog;
 
     /**
      * Creates new form ManageProductCatalogJPanel
@@ -157,7 +160,17 @@ public class ManageProductCatalogJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
         // TODO add your handling code here:
-        
+        int selectedRow = tblProducts.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a product from the table first", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Product product = (Product)tblProducts.getValueAt(selectedRow, 0);
+        ViewProductDetailJPanel vpjp = new ViewProductDetailJPanel(workArea, product);
+        workArea.add("ViewProductJPanel", vpjp);
+        CardLayout layout = (CardLayout)workArea.getLayout();
+        layout.next(workArea);
     }//GEN-LAST:event_btnViewActionPerformed
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
@@ -169,12 +182,51 @@ public class ManageProductCatalogJPanel extends javax.swing.JPanel {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        
+        String input = JOptionPane.showInputDialog(null, "Enter Product ID:");
+        if(input == null || input.trim().isEmpty()) {
+            return;
+        }
+
+        try {
+            int id = Integer.parseInt(input);
+            Product product = supplier.getProductCatalog().searchProduct(id);
+
+            if(product != null) {
+                for(int i = 0; i < tblProducts.getRowCount(); i++) {
+                    Product rowProduct = (Product)tblProducts.getValueAt(i, 0);
+                    if(rowProduct.getId() == id) {
+                        // Select the found product in table
+                        tblProducts.setRowSelectionInterval(i, i);
+                        // Scroll to the selected row
+                        tblProducts.scrollRectToVisible(tblProducts.getCellRect(i, 0, true));
+                        return;
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, 
+                    "No product found with ID: " + id, 
+                    "Information", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch(NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, 
+                "Please enter a valid product ID", 
+                "Warning", 
+                JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        
+        int selectedRow = tblProducts.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a product from the table first", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Product product = (Product)tblProducts.getValueAt(selectedRow, 0);
+        supplier.getProductCatalog().removeProduct(product);
+        refreshTable();
     }//GEN-LAST:event_btnDeleteActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreate;

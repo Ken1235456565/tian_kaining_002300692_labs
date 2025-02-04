@@ -19,8 +19,9 @@ import javax.swing.JPanel;
  */
 public class CreateNewProductJPanel extends javax.swing.JPanel {
 
-    Supplier supplier;
-    JPanel workArea;
+    private Supplier supplier;
+    private JPanel workArea;
+    private Product product;
 
     /**
      * Creates new form CreateProductJPanel
@@ -29,6 +30,10 @@ public class CreateNewProductJPanel extends javax.swing.JPanel {
         initComponents();
         this.supplier = supplier;
         this.workArea = workArea;
+        
+        txtId.setText("");
+        txtName.setText("");  // 名字框置空
+        txtPrice.setText("");
     }
 
     /**
@@ -136,16 +141,45 @@ public class CreateNewProductJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        Product product = supplier.getProductCatalog().addProduct();
-        product.setName(txtName.getText());
-        String stringPrice = txtPrice.getText();
-        if (stringPrice.isEmpty() == false) {
-            int price = Integer.parseInt(stringPrice);
-            product.setPrice(price);
+        String name = txtName.getText().trim();
+        String priceStr = txtPrice.getText().trim();
+        
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Please enter product name", 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        JOptionPane.showMessageDialog(this, "Product successfully added", "Information", JOptionPane.INFORMATION_MESSAGE);
-        backAction();
+        try {
+            if (priceStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please enter product price", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int price = Integer.parseInt(priceStr);
+            
+            // 所有验证通过后，才创建产品
+            Product product = supplier.getProductCatalog().addProduct();
+            product.setName(name);
+            product.setPrice(price);
+            
+            JOptionPane.showMessageDialog(this, 
+                "Product successfully added", 
+                "Information", 
+                JOptionPane.INFORMATION_MESSAGE);
+            backAction();
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, 
+                "Please enter a valid price", 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
 }//GEN-LAST:event_btnAddActionPerformed
+        
     private void backAction() {
         workArea.remove(this);
         Component[] componentArray = workArea.getComponents();

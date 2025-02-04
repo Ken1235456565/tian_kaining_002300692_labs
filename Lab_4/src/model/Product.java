@@ -16,6 +16,7 @@ public class Product {
     private String name;
     private int price;
     private int id;
+    private ArrayList<Feature> features = new ArrayList<>();
 
     //this is a counter
     private static int count = 0;
@@ -53,4 +54,15 @@ public class Product {
         return name;
     }
     
+        public ArrayList<Feature> getFeatures() {
+    return features;
+    }
+
+    public void addFeature(Feature feature) {
+        features.add(feature);
+    }
+
+    public void removeFeature(Feature feature) {
+        features.remove(feature);
+    }
 }

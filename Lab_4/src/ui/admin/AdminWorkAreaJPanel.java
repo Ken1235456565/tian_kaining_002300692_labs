@@ -111,11 +111,15 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
+        // 清除所有工作区域组件
+        workArea.removeAll();
+
+        // 从主工作区移除当前面板
         mainWorkArea.remove(this);
         CardLayout layout = (CardLayout)mainWorkArea.getLayout();
         layout.previous(mainWorkArea);
-        
-        // Refresh the login screen
+
+        // 刷新登录界面
         Component[] components = mainWorkArea.getComponents();
         for(Component c : components){
             if(c instanceof LoginScreen){
