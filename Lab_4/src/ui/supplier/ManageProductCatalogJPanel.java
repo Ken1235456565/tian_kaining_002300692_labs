@@ -31,6 +31,13 @@ public class ManageProductCatalogJPanel extends javax.swing.JPanel {
         initComponents();
         this.workArea = workArea;
         this.supplier = supplier;
+        
+        //显示供应商logo的空位置
+        if (supplier.getLogoImage() != null) {
+            imgLogo.setIcon(supplier.getLogoImage());
+        } else {
+            imgLogo.setText("<No Image>");
+        }
        
         refreshTable();
     }
@@ -112,6 +119,15 @@ public class ManageProductCatalogJPanel extends javax.swing.JPanel {
         });
 
         imgLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imgLogo.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                imgLogoAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -146,9 +162,7 @@ public class ManageProductCatalogJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(imgLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(imgLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDelete)
@@ -182,38 +196,10 @@ public class ManageProductCatalogJPanel extends javax.swing.JPanel {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        String input = JOptionPane.showInputDialog(null, "Enter Product ID:");
-        if(input == null || input.trim().isEmpty()) {
-            return;
-        }
-
-        try {
-            int id = Integer.parseInt(input);
-            Product product = supplier.getProductCatalog().searchProduct(id);
-
-            if(product != null) {
-                for(int i = 0; i < tblProducts.getRowCount(); i++) {
-                    Product rowProduct = (Product)tblProducts.getValueAt(i, 0);
-                    if(rowProduct.getId() == id) {
-                        // Select the found product in table
-                        tblProducts.setRowSelectionInterval(i, i);
-                        // Scroll to the selected row
-                        tblProducts.scrollRectToVisible(tblProducts.getCellRect(i, 0, true));
-                        return;
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, 
-                    "No product found with ID: " + id, 
-                    "Information", 
-                    JOptionPane.INFORMATION_MESSAGE);
-            }
-        } catch(NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, 
-                "Please enter a valid product ID", 
-                "Warning", 
-                JOptionPane.WARNING_MESSAGE);
-        }
+        SearchForProductJPanel sfpjp = new SearchForProductJPanel(workArea, supplier);
+        workArea.add("SearchForProductJPanel", sfpjp);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.next(workArea);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -228,6 +214,12 @@ public class ManageProductCatalogJPanel extends javax.swing.JPanel {
         supplier.getProductCatalog().removeProduct(product);
         refreshTable();
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void imgLogoAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_imgLogoAncestorAdded
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_imgLogoAncestorAdded
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnDelete;

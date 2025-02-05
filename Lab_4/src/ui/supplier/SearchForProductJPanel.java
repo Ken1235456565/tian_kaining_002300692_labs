@@ -108,7 +108,7 @@ public class SearchForProductJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         String productIdStr = idField.getText().trim();
     
-        // 检查输入是否为空
+        // Check if input is empty
         if (productIdStr.isEmpty()) {
             lblMessage.setText("Please enter a product ID");
             return;
@@ -119,7 +119,7 @@ public class SearchForProductJPanel extends javax.swing.JPanel {
             Product product = supplier.getProductCatalog().searchProduct(productId);
 
             if (product != null) {
-                lblMessage.setText(""); // 清除错误消息
+                lblMessage.setText(""); // Clear error message
                 ViewProductDetailJPanel vpjp = new ViewProductDetailJPanel(workArea, product);
                 workArea.add("ViewProductDetailJPanel", vpjp);
                 CardLayout layout = (CardLayout) workArea.getLayout();
@@ -130,7 +130,7 @@ public class SearchForProductJPanel extends javax.swing.JPanel {
 
         } catch (NumberFormatException e) {
             lblMessage.setText("Please enter a valid number");
-        }
+    }
 }//GEN-LAST:event_searchButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

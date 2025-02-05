@@ -196,6 +196,11 @@ public class AddSupplier extends javax.swing.JPanel {
         supplier.setSupplyName(name);
         supplier.setLogoImage(logoImage);
         
+        // 确保正确设置logo
+        if (logoImage != null) {
+            supplier.setLogoImage(logoImage);
+        }
+        
         JOptionPane.showMessageDialog(this,
             "Supplier successfully added",
             "Success",
