@@ -201,17 +201,9 @@ public class SupplierWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
-
-        mainWorkArea.remove(this);
-
-        Component[] componentArray = mainWorkArea.getComponents();
-        Component component = componentArray[componentArray.length - 1];
-        LoginScreen loginPanel = (LoginScreen) component;
-        loginPanel.populateSupplierCombo();
-
-        CardLayout layout = (CardLayout) mainWorkArea.getLayout();
-        layout.previous(mainWorkArea);
-
+        JPanel parentPanel = (JPanel) this.getParent(); // 获取父容器
+        CardLayout layout = (CardLayout) parentPanel.getLayout();
+        layout.show(parentPanel, "LoginScreen"); // 切换到 LoginScreen
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     public String toString() {

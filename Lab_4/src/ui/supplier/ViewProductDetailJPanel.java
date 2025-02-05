@@ -8,6 +8,8 @@ import model.Product;
 import model.Feature;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -22,6 +24,7 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
 
     JPanel workArea;
     Product product;
+    Feature feature;
 
     /**
      * Creates new form CreateProductJPanel
@@ -259,62 +262,64 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         try {
-        // 保存产品基本信息
         product.setName(txtName.getText());
         String priceText = txtPrice.getText().trim();
-            if (!priceText.isEmpty()) {
-                int price = Integer.parseInt(priceText);
-                product.setPrice(price);
-            }
-        
-            // 禁用编辑状态
-            txtName.setEditable(false);
-            txtPrice.setEditable(false);
-            btnSave.setEnabled(false);
-            tblFeatures.setEnabled(false);
-            btnAddFeature.setEnabled(false);
-            btnRemoveFeature.setEnabled(false);
+        if (!priceText.isEmpty()) {
+            int price = Integer.parseInt(priceText);
+            product.setPrice(price);
+        }
 
-            JOptionPane.showMessageDialog(this, 
-                "Product information saved successfully!", 
-                "Success", 
-                JOptionPane.INFORMATION_MESSAGE);
-            
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, 
-                    "Please enter a valid price", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-                }
+        // 先保存特性
+        saveFeatures();
+        
+        // 禁用编辑状态
+        txtName.setEditable(false);
+        txtPrice.setEditable(false);
+        btnSave.setEnabled(false);
+        tblFeatures.setEnabled(false);
+        btnAddFeature.setEnabled(false);
+        btnRemoveFeature.setEnabled(false);
+
+        JOptionPane.showMessageDialog(this, 
+            "Product information saved successfully!", 
+            "Success", 
+            JOptionPane.INFORMATION_MESSAGE);
+        
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, 
+            "Please enter a valid price", 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void saveFeatures() {
-       DefaultTableModel model = (DefaultTableModel) tblFeatures.getModel();
+    DefaultTableModel model = (DefaultTableModel) tblFeatures.getModel();
+    
+    // 用于存储最新的功能列表，避免重复
+    List<Feature> updatedFeatures = new ArrayList<>();
 
-        for (int i = 0; i < model.getRowCount(); i++) {
-            String name = (model.getValueAt(i, 0) != null) ? model.getValueAt(i, 0).toString().trim() : "";
-            Object value = model.getValueAt(i, 1);
+    for (int i = 0; i < model.getRowCount(); i++) {
+        String name = (model.getValueAt(i, 0) != null) ? model.getValueAt(i, 0).toString().trim() : "";
+        Object value = model.getValueAt(i, 1);
 
-            if (!name.isEmpty()) {
-                Feature existingFeature = null;
-
-                // 遍历当前 Product 的 features，看是否已有该特性
-                for (Feature f : product.getFeatures()) {
-                    if (f.getName().equals(name)) {
-                        existingFeature = f;
-                        break;
-                    }
-                }
-
-                if (existingFeature != null) {
-                    existingFeature.setValue(value); // 更新已有特性值
-                } else {
-                    Feature feature = new Feature(product, name, value);
-                    product.addFeature(feature); // 直接添加，不清空原有的特性
-                }
+        if (!name.isEmpty()) {
+            Feature existingFeature = product.findFeatureByName(name);
+            
+            if (existingFeature != null) {
+                existingFeature.setValue(value);  // 如果已经存在，更新值
+                updatedFeatures.add(existingFeature);
+            } else {
+                Feature newFeature = new Feature(product, name, value);
+                updatedFeatures.add(newFeature);
             }
         }
     }
+
+    // 更新 Product 的 features
+    product.getFeatures().clear();
+    product.getFeatures().addAll(updatedFeatures);
+}
 
     private void btnAddFeatureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFeatureActionPerformed
         // TODO add your handling code here:

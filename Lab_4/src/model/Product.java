@@ -54,8 +54,17 @@ public class Product {
         return name;
     }
     
-        public ArrayList<Feature> getFeatures() {
+    public ArrayList<Feature> getFeatures() {
     return features;
+    }
+        
+    public Feature findFeatureByName(String name) {
+    for (Feature f : features) {
+        if (f.getName().equals(name)) {
+            return f; // 找到匹配的 Feature，返回它
+        }
+    }
+    return null; // 没找到，返回 null
     }
 
     public void addFeature(Feature feature) {
