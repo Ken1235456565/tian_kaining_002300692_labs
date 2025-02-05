@@ -84,22 +84,12 @@ public class SupplierWorkAreaJPanel extends javax.swing.JPanel {
 
         btnSupplierProfile.setText("Update Profile");
         btnSupplierProfile.setEnabled(false);
-        btnSupplierProfile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSupplierProfileActionPerformed(evt);
-            }
-        });
 
         btnManageStaff.setText("Manage Staff");
         btnManageStaff.setEnabled(false);
 
         Performance.setText("Performance");
         Performance.setEnabled(false);
-        Performance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PerformanceActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout menuBarLayout = new javax.swing.GroupLayout(menuBar);
         menuBar.setLayout(menuBarLayout);
@@ -168,36 +158,6 @@ public class SupplierWorkAreaJPanel extends javax.swing.JPanel {
         CardLayout layout = (CardLayout) workArea.getLayout();
         layout.next(workArea);
     }//GEN-LAST:event_btnManageProductCatalogActionPerformed
-
-    private void PerformanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerformanceActionPerformed
-//        // TODO add your handling code here:
-//        JOptionPane.showMessageDialog(
-//            this, // Parent component (the current panel)
-//            "Performance feature is under development.", // Message to display
-//            "Info", // Dialog title
-//            JOptionPane.INFORMATION_MESSAGE // Message type
-//        );
-    }//GEN-LAST:event_PerformanceActionPerformed
-
-    private void btnSupplierProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierProfileActionPerformed
-//        // TODO add your handling code here:
-//        // Remove the current panel from the main work area
-//        mainWorkArea.remove(this);
-//
-//        // Get the last component in the main work area (assumed to be the login screen)
-//        Component[] componentArray = mainWorkArea.getComponents();
-//        Component component = componentArray[componentArray.length - 1];
-//
-//        // Cast the component to LoginScreen and refresh the supplier combo box
-//        if (component instanceof LoginScreen) {
-//            LoginScreen loginPanel = (LoginScreen) component;
-//            loginPanel.populateSupplierCombo(); // Refresh the supplier list in the login screen
-//        }
-//
-//        // Navigate back to the previous panel (login screen)
-//        CardLayout layout = (CardLayout) mainWorkArea.getLayout();
-//        layout.previous(mainWorkArea);
-    }//GEN-LAST:event_btnSupplierProfileActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
