@@ -146,10 +146,10 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
 
-//        CustomerWorkAreaJPanel customerWorkArea = new CustomerWorkAreaJPanel(userProcessContainer, supplierDirectory);
-//        userProcessContainer.add("CustomerWorkAreaJPanel", customerWorkArea);
-//        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-//        layout.next(userProcessContainer);
+        CustomerWorkAreaJPanel customerWorkArea = new CustomerWorkAreaJPanel(userProcessContainer, supplierDirectory);
+        userProcessContainer.add("CustomerWorkAreaJPanel", customerWorkArea);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnCustomerActionPerformed
 
     /**

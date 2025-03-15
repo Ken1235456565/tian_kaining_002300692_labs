@@ -5,10 +5,13 @@
  */
 package ui.CustomerRole;
 
-
-
-
-
+import java.awt.CardLayout;
+import javax.swing.JPanel;
+import model.Customer;
+import model.CustomerDirectory;
+import model.OrderDirectory;
+import model.ShoppingCart;
+import model.SupplierDirectory;
 
 
 /**
@@ -17,11 +20,24 @@ package ui.CustomerRole;
  */
 public class CustomerWorkAreaJPanel extends javax.swing.JPanel {
 
-
+    private JPanel userProcessContainer;
+    private SupplierDirectory supplierDirectory;
+    private CustomerDirectory customerDirectory;
+    private OrderDirectory orderDirectory;
+    private Customer customer;
+    private ShoppingCart cart;
 
     /** Creates new form ProductManagerWorkAreaJPanel */
     public CustomerWorkAreaJPanel() {
         initComponents();
+        userProcessContainer = userProcessContainer;
+        supplierDirectory = supplierDirectory;
+        
+        // 创建默认客户和购物车
+        customerDirectory = new CustomerDirectory();
+        orderDirectory = new OrderDirectory();
+        customer = customerDirectory.getCustomerList().get(0); // 使用默认客户
+        cart = new ShoppingCart();
     }
 
     /** This method is called from within the constructor to
@@ -76,9 +92,17 @@ public class CustomerWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     private void btnBrowseCatalogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseCatalogActionPerformed
         // TODO add your handling code here:
-        
+        BrowseProductsJPanel browseProducts = new BrowseProductsJPanel();
+        browseProducts.setSupplierDirectory(supplierDirectory);
+        browseProducts.setCustomer(customer);
+        browseProducts.setCart(cart);
+        browseProducts.setUserProcessContainer(userProcessContainer);
+        userProcessContainer.add("BrowseProductsJPanel", browseProducts);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnBrowseCatalogActionPerformed
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBrowseCatalog;
     private javax.swing.JLabel lblTitle;
