@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import model.Customer;
+import model.CustomerDirectory;
+import model.OrderDirectory;
 
 
 /**
@@ -22,6 +25,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class BrowseProductsJPanel extends javax.swing.JPanel {
 
+    private JPanel userProcessContainer;
+    private SupplierDirectory supplierDirectory;
+    private CustomerDirectory customerDirectory;
+    private OrderDirectory orderDirectory;
+    private Customer customer;
     /** Creates new form BrowseProducts */
     public BrowseProductsJPanel() {
         initComponents();
@@ -319,7 +327,26 @@ public class BrowseProductsJPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_btnViewOrderItemActionPerformed
 
+    // 给BrowseProductsJPanel添加setter方法
+    public void setSupplierDirectory(SupplierDirectory sd) {
+        this.supplierDirectory = sd;
+    }
     
+    public void setCustomerDirectory(CustomerDirectory cd) {
+        this.customerDirectory = cd;
+    }
+    
+    public void setOrderDirectory(OrderDirectory od) {
+        this.orderDirectory = od;
+    }
+    
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+    
+    public void setUserProcessContainer(JPanel upc) {
+        this.userProcessContainer = upc;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToCart;
     private javax.swing.JButton btnBack;
