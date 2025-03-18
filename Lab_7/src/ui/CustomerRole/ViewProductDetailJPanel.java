@@ -16,11 +16,29 @@ import javax.swing.JPanel;
  */
 public class ViewProductDetailJPanel extends javax.swing.JPanel {
 
+    private JPanel userProcessContainer;
+    private Product product;
 
     /** Creates new form CreateProductJPanel */
     public ViewProductDetailJPanel() {
         initComponents();
         
+    }
+    
+    public void setUserProcessContainer(JPanel upc) {
+        userProcessContainer = upc;
+    }
+    
+    public void setProduct(Product p) {
+        product = p;
+        displayProductDetails();
+    }
+    
+    private void displayProductDetails() {
+        nameField.setText(product.getProdName());
+        idField.setText(String.valueOf(product.getModelNumber()));
+        txtPrice.setText(String.valueOf(product.getPrice()));
+        txtAvail.setText("Available"); // 在实际应用中，这会反映真实的库存
     }
     
     /** This method is called from within the constructor to
@@ -127,7 +145,9 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
 
     private void backButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton1ActionPerformed
         // TODO add your handling code here:
-        
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
     }//GEN-LAST:event_backButton1ActionPerformed
     
     

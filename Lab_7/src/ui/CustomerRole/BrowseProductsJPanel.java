@@ -395,12 +395,52 @@ public class BrowseProductsJPanel extends javax.swing.JPanel {
 
     private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
         // TODO add your handling code here:
-       
+        if (cart.getCartItems().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Your cart is empty", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // 创建新订单
+        Order order = new Order(customer);
+        
+        // 将购物车中的所有商品添加到订单
+        for (OrderItem item : cart.getCartItems()) {
+            order.addOrderItem(item);
+        }
+        
+        // 添加订单到订单目录
+        orderDirectory.addOrder(order);
+        
+        // 清空购物车
+        cart.clear();
+        refreshCartTable();
+        
+        JOptionPane.showMessageDialog(null, "Order placed successfully!\nOrder #: " + order.getOrderNumber(), 
+                "Order Confirmation", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnCheckOutActionPerformed
 
     private void btnModifyQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyQuantityActionPerformed
         // TODO add your handling code here:
+        int selectedRow = tblCart.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(null, "Please select an item from the cart", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
+        try {
+            int newQuantity = Integer.parseInt(txtNewQuantity.getText());
+            if (newQuantity <= 0) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid quantity", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            OrderItem item = cart.getCartItems().get(selectedRow);
+            cart.updateItemQuantity(item, newQuantity);
+            refreshCartTable();
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid quantity", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnModifyQuantityActionPerformed
 
     private void btnSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchProductActionPerformed
@@ -424,11 +464,31 @@ public class BrowseProductsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSearchProductActionPerformed
 
     private void btnRemoveOrderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveOrderItemActionPerformed
-       
+       int selectedRow = tblCart.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(null, "Please select an item from the cart", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        OrderItem item = cart.getCartItems().get(selectedRow);
+        cart.removeItem(item);
+        refreshCartTable();
     }//GEN-LAST:event_btnRemoveOrderItemActionPerformed
 
     private void btnViewOrderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrderItemActionPerformed
+        int selectedRow = tblCart.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(null, "Please select an item from the cart", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
+        OrderItem item = cart.getCartItems().get(selectedRow);
+        ViewOrderItemDetailJPanel viewItemPanel = new ViewOrderItemDetailJPanel();
+        viewItemPanel.setOrderItem(item);
+        viewItemPanel.setUserProcessContainer(userProcessContainer);
+        userProcessContainer.add("ViewOrderItemDetailJPanel", viewItemPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnViewOrderItemActionPerformed
 
     private void btnAddToCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToCartActionPerformed
