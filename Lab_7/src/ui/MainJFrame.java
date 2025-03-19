@@ -128,12 +128,10 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
-
         AdminWorkAreaJPanel awajp = new AdminWorkAreaJPanel(userProcessContainer, supplierDirectory);
-        userProcessContainer.add("AdminWorkAreaJPanel",awajp);
+        userProcessContainer.add("AdminWorkAreaJPanel", awajp);
         CardLayout layout = (CardLayout)userProcessContainer.getLayout();
         layout.next(userProcessContainer);
-
     }//GEN-LAST:event_btnAdminActionPerformed
 
     private void btnSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierActionPerformed
@@ -145,8 +143,15 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSupplierActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
-
+// 创建CustomerWorkAreaJPanel并显示
         CustomerWorkAreaJPanel customerWorkArea = new CustomerWorkAreaJPanel(userProcessContainer, supplierDirectory);
+        customerWorkArea.setCustomerDirectory(customerDirectory);
+        customerWorkArea.setOrderDirectory(orderDirectory);
+        // 默认使用第一个客户
+        if (!customerDirectory.getCustomerList().isEmpty()) {
+            customerWorkArea.setCustomer(customerDirectory.getCustomerList().get(0));
+        }
+        
         userProcessContainer.add("CustomerWorkAreaJPanel", customerWorkArea);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
