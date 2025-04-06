@@ -1,0 +1,14 @@
+.DS_Store
+.DS_Store?
+/lab_2/nbproject/private/
+/lab_2/build/
+/Lab_3/nbproject/private/
+/Lab_3/build/
+/Lab_4/Lab_4_Skeleton/nbproject/private/
+/Lab_4/build/
+/Lab_4/nbproject/private/
+/Assignment_3/nbproject/private/
+/Lab_6/nbproject/private/
+/assignment__3/nbproject/private/
+/Lab_7/nbproject/private/
+/Lab_7/build/
